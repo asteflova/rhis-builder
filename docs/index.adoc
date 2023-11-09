@@ -1,5 +1,9 @@
+:toc: left
+
 = Using rhis-builder
 
 The _rhis-builder_ project builds an environment suitable for demonstrating the Red{nbsp}Hat Infrastructure Standard Adoption Model (RH-ISAM). RH-ISAM is an infrastructure model that implements several Standard Operating Environments based on Red{nbsp}Hat Identity{nbsp}Management, Red{nbsp}Hat Satellite, and Red{nbsp}Hat Ansible Automation Platform.
 
 NOTE: _rhis-builder_ is currently not intended to create production environments.
+
+include::prerequisites.adoc[leveloffset=+1]
