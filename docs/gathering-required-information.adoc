@@ -1,0 +1,89 @@
+= Gathering required information
+
+== Prerequisites
+
+* Register or log in to https://developers.redhat.com/register/?intcmp=701f2000001OMHaAAO[Red{nbsp}Hat Developer]. See https://developers.redhat.com/about to learn more about the Red{nbsp}Hat Developer Program.
+* Ensure https://podman.io/[Podman] is installed. See https://docs.podman.io/en/latest/[Podman documentation] for details.
+* Ensure Ansible-core is installed. See https://docs.ansible.com/core.html[Ansible Core documentation] for details.
+
+== Generating a Red{nbsp}Hat offline token
+
+. Go to https://access.redhat.com/management/api[Red{nbsp}Hat API Tokens], and click *Generate Token*.
++
+IMPORTANT: Copy the token to a secure location. If you reload the page, you will lose the token.
+
+See https://access.redhat.com/articles/3626371[Getting started with Red{nbsp}Hat APIs] for details on generating and using an offline token.
+
+You will use the Red{nbsp}Hat offline token in the _rhisbuilder_vault.yml_ file.
+// ^ Should this mention a particular variable in the yml file?
+
+== Creating a manifest for Ansible Automation Platform
+
+A manifest for the Ansible Automation Platform (AAP) is a .zip file that contains information about subscriptions. This file must exist before the Ansible Controller is provisioned.
+
+NOTE: To create a manifest, your organization must currently own a valid AAP subscription.
+
+. Log in to the https://access.redhat.com/[Red{nbsp}Hat Customer Portal] using an administrator user account.
+. Go to the https://access.redhat.com/management/subscription_allocations/[Subscription Allocations] page, and click *New Subscription Allocation*.
++
+Creating a new subscription allocation allows you to set aside subscriptions and entitlements for a system that is currently offline or air-gapped. This is necessary before you can download its manifest and upload it to Ansible Automation Platform.
+. Enter a name for the allocation.
+. Select the *Satellite{nbsp}6.8* as the type of the management application.
+. Click *Create*.
+
+See https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/red_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files[Obtaining a manifest file] in the _Red{nbsp}Hat Ansible{nbsp}Automation{nbsp}Platform Operations Guide_ for more details.
+
+== Red{nbsp}Hat organization ID
+
+. Go to https://access.redhat.com/[Red{nbsp}Hat Customer Portal] and log in with your Red Hat login ID and password.
+. Click on the profile icon in the top right corner. Your Red{nbsp}Hat organization ID is displayed as *Account number*.
+
+//Is the account number used in rhisbuilder_vault.yml too?
+
+== Red{nbsp}Hat Satellite activation key
+
+You can create a Satellite activation key in the following ways:
+
+* From an existing Satellite deployment that has proper entitlements allocated
+* From the https://console.redhat.com/[Red{nbsp}Hat Hybrid Cloud Portal].
+
+// Do we need to document creating the key from an existing Sat deployment too?
+
+To create the activation key from the Hybrid Cloud Portal:
+
+. Go to the https://console.redhat.com/insights/connector/activation-keys[Activation Keys] page on the Hybrid Cloud Portal.
+. Click *Create Activation Key*, and select: Name, Role, Service level, Usage.
+. Click *Create*.
+
+You will use the activation key name in the _rhisbuilder_vault.yml_ file as the _activation_key_vault_ variable.
+
+See https://access.redhat.com/documentation/en-us/red_hat_insights/2023/html/remote_host_configuration_and_management/activation-keys[Activation Keys] for more details.
+// ^ Link not working!
+
+== Automation Hub offline token
+
+You need an offline API token to upload or download collections using the Ansible Automation Hub. The token authenticates your _ansible-galaxy_ client to the Red{nbsp}Hat automation hub server.
+
+. Go to the https://console.redhat.com/ansible/automation-hub/token/[Connect to Hub] page on the Red{nbsp}Hat Hybrid Cloud Console.
+. Under *Offline token*, click *Load Token*.
+. Click the *Copy to clipboard* icon to copy the API token.
+. Paste the API token into a file and store in a secure location.
+
+You will use the Automation Hub token within the _rhisbuilder_vault.yml_ file as the _automation_hub_token_vault_ variable.
+
+See https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html-single/getting_started_with_automation_hub/index#hub-create-api-token[Creating the API token in automation hub] in _Getting started with automation hub_ for details.
+
+== Create Automation Hub sync list
+
+A synclist is a curated group of Red{nbsp}Hat Certified collections assembled by your Organization Administrator that syncs to your local Automation Hub. Use synclists to manage only the content that you want and exclude unnecessary collections.
+
+Each synclist has its own unique repository URL you can use to designate as a remote source for content in Automation Hub and is securely accessed using an API token.
+
+. Create Unique Automation Hub URL:
++
+[subs="+quotes,attributes"]
+----
+https://console.redhat.com/api/automation-hub/content/_youraccountnumber_-synclist/
+----
+
+You will use the Automation Hub Token within the _rhisbuilder_vault.yml_ file as the _automation_hub_url_vault_ variable.

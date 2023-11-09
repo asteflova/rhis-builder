@@ -7,3 +7,5 @@ The _rhis-builder_ project builds an environment suitable for demonstrating the 
 NOTE: _rhis-builder_ is currently not intended to create production environments.
 
 include::prerequisites.adoc[leveloffset=+1]
+
+include::gathering-required-information.adoc[leveloffset=+1]
